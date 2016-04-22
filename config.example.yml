@@ -1,0 +1,5 @@
+mailjet:
+  api_key: your api key
+  secret_key: your secret key
+  end_point: https://api.mailjet.com
+  default_from: your.email@example.com

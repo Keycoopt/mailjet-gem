@@ -1,18 +1,7 @@
 #rspec
 require 'mailjet_spec_helper'
 
-API_KEY = ENV['MJ_APIKEY_PUBLIC']
-API_SECRET = ENV['MJ_APIKEY_PRIVATE']
-
 describe Mailjet do
-  before(:all) do
-
-    Mailjet.configure do |config|
-      config.api_key = API_KEY
-      config.secret_key = API_SECRET
-    end
-  end
-
   describe 'simple GET requests' do
     it 'calls Contact.all without parameters' do
       res = Mailjet::Contact.all()

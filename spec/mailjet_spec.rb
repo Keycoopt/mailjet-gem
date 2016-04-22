@@ -2,14 +2,6 @@
 require 'mailjet_spec_helper'
 
 describe Mailjet do
-  before(:all) do
-     Mailjet.configure do |config|
-        config.api_key = ENV['MJ_APIKEY_PUBLIC']
-        config.secret_key = ENV['MJ_APIKEY_PRIVATE']
-        config.default_from = ENV['gbadi@student.42.fr']
-      end
-  end
-
   context 'checks date format on API request' do
       it 'should NOT look like 2014-05-19T15:31:09Z' do
          date = Mailjet::Apikey.first.created_at
