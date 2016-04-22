@@ -38,9 +38,15 @@ class Mailjet::APIMailer
     else
       content = (mail.mime_type == "text/html") ? {:html => mail.body.decoded} : {:text => mail.body.decoded}
     end
-
+    
+    from = if mail[:from]
+              mail[:from].addrs.first
+            else
+              Mail::Address.new(Mailjet.config.default_from)
+            end
     payload = {
-      :from => mail.from || Mailjet.config.default_from,
+      :from_email => from.address,
+      :from_name => from.display_name,
       :sender => mail.sender,
       :to => mail.to,
       :reply_to => mail.reply_to,
