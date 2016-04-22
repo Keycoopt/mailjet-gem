@@ -1,3 +1,4 @@
+#minitest
 require 'spec_helper'
 
 describe Mailjet::Configuration do

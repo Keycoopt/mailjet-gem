@@ -1,3 +1,4 @@
+#rspec
 require 'mailjet_spec_helper'
 
 describe Mailjet do

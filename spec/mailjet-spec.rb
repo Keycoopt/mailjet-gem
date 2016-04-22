@@ -1,4 +1,4 @@
-
+#rspec
 require 'mailjet_spec_helper'
 
 API_KEY = ENV['MJ_APIKEY_PUBLIC']

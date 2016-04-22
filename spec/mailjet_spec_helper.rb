@@ -1,3 +1,4 @@
+#rspec
 require 'bundler/setup'
 require 'mailjet'
 require 'active_support/core_ext'

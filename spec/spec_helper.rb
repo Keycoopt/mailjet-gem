@@ -1,3 +1,4 @@
+#minitest
 require 'minitest/autorun'
 require 'minitest/matchers'
 require 'minitest/pride'
