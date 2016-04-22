@@ -6,7 +6,6 @@ require 'minitest-spec-context'
 require 'mocha/setup'
 require 'mailjet'
 require 'mailjet/resource'
-require 'turn/autorun'
 
 require File.expand_path './support/vcr_setup.rb', __dir__
 
@@ -20,5 +19,3 @@ MiniTest::Spec.before do
     config.default_from = test_account['default_from']
   end
 end
-
-Turn.config.format = :outline
