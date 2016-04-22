@@ -26,6 +26,8 @@ class Mailjet::APIMailer
   end
 
   def deliver!(mail)
+    raise ArgumentError, "the message's from field has more than one mailbox specification (#{mail.from.join(', ')})" if mail.from.size > 1
+
     if mail.multipart?
       content = {
         :text => mail.text_part.try(:decoded),
