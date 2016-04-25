@@ -21,11 +21,10 @@ module Mailjet
     extend ActiveSupport::Concern
 
     included do
-      cattr_accessor :resource_path, :public_operations, :read_only, :filters, :resourceprop, :action, :non_json_urls
+      cattr_accessor :resource_path, :public_operations, :read_only, :filters, :resourceprop, :action
       cattr_writer :connection
 
       def self.connection
-        @non_json_urls = ["v3/send/message"] #urls that don't accept JSON input
         class_variable_get(:@@connection) || default_connection
       end
 
@@ -39,11 +38,7 @@ module Mailjet
       end
 
       def self.default_headers
-        if @non_json_urls.include?(self.resource_path)#don't use JSON if Send API
-        default_headers = { accept: :json, accept_encoding: :deflate }
-        else
-          default_headers = { accept: :json, accept_encoding: :deflate, content_type: :json } #use JSON if *not* Send API
-        end
+        default_headers = { accept: :json, accept_encoding: :deflate, content_type: :json }
         return default_headers.merge(user_agent: "mailjet-api-v3-ruby/#{Gem.loaded_specs["mailjet"].version}")
       end
     end
