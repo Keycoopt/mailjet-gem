@@ -40,5 +40,44 @@ describe Mailjet::APIMailer do
       
       expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including attachments: [hash_including('content' => "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQ=\n")]
     end
+    
+    specify "the payload sent to Mailjet::MessageDelivery contains a :text_part key if no content type are specified" do
+      message.body = "Body's content of my email"
+      allow(Mailjet::MessageDelivery).to receive(:create)
+      
+      api_mailer.deliver!(message)
+      
+      expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including text_part: "Body's content of my email"
+    end
+    
+    specify "the payload sent to Mailjet::MessageDelivery contains a :text_part key if the content type is text/plain" do
+      message.body = "Body's content of my email"
+      message.content_type = "text/plain"
+      allow(Mailjet::MessageDelivery).to receive(:create)
+      
+      api_mailer.deliver!(message)
+      
+      expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including text_part: "Body's content of my email"
+    end
+    
+    specify "the payload sent to Mailjet::MessageDelivery contains a :html_part key if the content type is text/html" do
+      message.body = "Body's content of my email"
+      message.content_type = "text/html"
+      allow(Mailjet::MessageDelivery).to receive(:create)
+      
+      api_mailer.deliver!(message)
+      
+      expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including html_part: "Body's content of my email"
+    end
+    
+    specify "the payload sent to Mailjet::MessageDelivery contains both a :text_part and a :html_part keys if the content type is text/html" do
+      message.text_part = "Body's plain text content of my email"
+      message.html_part = "Body's html content of my email"
+      allow(Mailjet::MessageDelivery).to receive(:create)
+      
+      api_mailer.deliver!(message)
+      
+      expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including text_part: "Body's plain text content of my email", html_part: "Body's html content of my email"
+    end
   end
 end

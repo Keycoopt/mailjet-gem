@@ -30,15 +30,15 @@ class Mailjet::APIMailer
 
     if mail.multipart?
       content = {
-        :text => mail.text_part.try(:decoded),
-        :html => mail.html_part.try(:decoded),
+        :text_part => mail.text_part.try(:decoded),
+        :html_part => mail.html_part.try(:decoded),
         :attachments => mail.attachments.reject{ |a| a.inline? }.map do |a|
           { "Content-Type"  => a.mime_type, "Filename" => a.filename, "content" => Base64.encode64(a.body.decoded) }
         end,
         :inlineattachment => mail.attachments.select{ |a| !a.inline? }.try(:decoded)
       }
     else
-      content = (mail.mime_type == "text/html") ? {:html => mail.body.decoded} : {:text => mail.body.decoded}
+      content = (mail.mime_type == "text/html") ? {:html_part => mail.body.decoded} : {:text_part => mail.body.decoded}
     end
     
     from = if mail[:from]
