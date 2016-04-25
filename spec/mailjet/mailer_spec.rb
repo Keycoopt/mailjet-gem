@@ -21,6 +21,16 @@ describe Mailjet::APIMailer do
       expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including from_name: "Alain Aqueduc", from_email: "alain.aqueduc@example.com"
     end
     
+    specify "the payload sent to Mailjet::MessageDelivery contains a :to key including names and email addresses for each receivers" do
+        message[:to] =  "Alain Aqueduc <alain.aqueduc@example.com>"
+        message[:to] << "Bertrand Baquet <bertrand.baquet@example.com>"
+        allow(Mailjet::MessageDelivery).to receive(:create).once
+
+        api_mailer.deliver!(message)
+
+        expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including to: "Alain Aqueduc <alain.aqueduc@example.com>, Bertrand Baquet <bertrand.baquet@example.com>"
+      end
+    
     specify "the payload sent to Mailjet::MessageDelivery contains the message's attachments" do
       message.add_file(filename: "test.txt", content:  "Lorem ipsum dolor sit amet")
 

@@ -50,7 +50,7 @@ class Mailjet::APIMailer
       :from_email => from.address,
       :from_name => from.display_name,
       :sender => mail.sender,
-      :to => mail.to,
+      :to => mail[:to].to_s,
       :reply_to => mail.reply_to,
       :cc => mail.cc,
       :bcc => mail.bcc,
