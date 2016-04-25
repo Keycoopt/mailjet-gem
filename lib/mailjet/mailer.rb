@@ -33,7 +33,7 @@ class Mailjet::APIMailer
         :text => mail.text_part.try(:decoded),
         :html => mail.html_part.try(:decoded),
         :attachments => mail.attachments.reject{ |a| a.inline? }.map do |a|
-          { "Content-Type"  => a.mime_type, "Filename" => a.filename, "content" => a.body }
+          { "Content-Type"  => a.mime_type, "Filename" => a.filename, "content" => Base64.encode64(a.body.decoded) }
         end,
         :inlineattachment => mail.attachments.select{ |a| !a.inline? }.try(:decoded)
       }

@@ -30,5 +30,15 @@ describe Mailjet::APIMailer do
       
       expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including attachments: [{'Content-Type' => 'text/plain', 'Filename' => 'test.txt', 'content' => anything}]
     end
+    
+    specify "content of the message's attachments into the payload must be base 64 encoded" do
+      message.add_file(filename: "test.txt", content: "Lorem ipsum dolor sit amet")
+
+      allow(Mailjet::MessageDelivery).to receive(:create)
+      
+      api_mailer.deliver!(message)
+      
+      expect(Mailjet::MessageDelivery).to have_received(:create).with hash_including attachments: [hash_including('content' => "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQ=\n")]
+    end
   end
 end
